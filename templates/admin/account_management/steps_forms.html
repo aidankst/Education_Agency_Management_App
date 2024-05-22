@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="container-fluid" id="steps_forms_container">
+                <h3 class="section-title">Add New Step</h3>
+                <form action="/admin/add_new_step" method="post" id="add_new_step_form" validate>
+                    <div class="form-floating mt-1 mb-3">
+                        <input type="number" class="form-control" id="stepIdInput" placeholder="<STEP>" name="id" required>
+                        <label for="stepIdInput">Step</label>
+                    </div>
+                    <div class="form-floating mt-1 mb-3">
+                        <input type="text" class="form-control" id="stepNameInput" placeholder="<STEP_NAME>" name="name" required>
+                        <label for="stepNameInput">Step Description</label>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button type="submit" class="w-25 btn btn-md btn-primary mt-1" id="add_new_step_button">Add</button>
+                    </div>
+                </form>
+            </div>
+            
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="container-fluid" id="steps_forms_container">
+                <h3 class="section-title">Remove a Step</h3>
+                <form action="/admin/remove_step" method="post" id="remove_step_form" validate>
+                    <div class="mb-3">
+                        <label class="form-label" for="stepsSelect">Choose a Step</label>
+                        <select class="form-select" id="stepsSelect" name="id">
+                            {% for step in steps %}
+                                <option value="{{ step.id }}">{{ step.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="d-flex justify-content-center align-items-center">
+                        <button type="submit" class="w-50 btn btn-md btn-danger mt-1" id="remove_step_button">Remove</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('add_new_step_form').onsubmit = function() {
+        var submitButton = document.getElementById('add_new_step_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding ...';
+        }
+    };
+    document.getElementById('remove_step_form').onsubmit = function() {
+        var submitButton = document.getElementById('remove_step_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Removing ...';
+        }
+    };
+</script>

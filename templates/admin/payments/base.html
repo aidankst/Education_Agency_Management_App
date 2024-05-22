@@ -1,0 +1,59 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Payments | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="payments">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Payments</h3>
+
+                        <div class="container-fluid">
+                            <ul class="list-inline">
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/admin/invoices">Invoices</a>
+                                </li>
+                                <!-- <li>
+                                    <a class="no-color-link" href="/admin/check_payments">Check Payments</a>
+                                </li> -->
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/admin/sell_package">Sell a Package</a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/admin/packages">Packages</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/admin/items">Items</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/admin/services">Services</a>
+                                </li>
+                            </ul>   
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                {% block payments %}
+                {% endblock payments %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

@@ -1,0 +1,51 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Settings | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="settings">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Settings</h3>
+                        <h4>{{ current_user.username }}</h4>
+
+                        <div class="container-fluid">
+                            <ul class="list-inline">
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/account_details">Account Details</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/change_password">Change Password</a>
+                                </li>
+                                {% if current_user.role == 'client' %}
+                                <li>
+                                    <a class="no-color-link" href="/client/personal_form">Personal Form</a>
+                                </li>
+                                {% endif %}
+                            </ul>   
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                {% block settings %}
+                {% endblock settings %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

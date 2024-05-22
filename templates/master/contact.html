@@ -1,0 +1,97 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Contact | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="contact">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-2 col-sm-0">
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <h1 class="text-center">Contact Us</h1>
+                <div class="container-fluid no-color-text">
+                    <a class="no-color-link component" href="mailto:kontakt@leveling.pl">kontakt@leveling.pl</a> | +959 51 88 613
+                    <br><br>
+                    <p class="component">Address 1: ul. Zamknięta 10, 30-554 Kraków, Poland <br>Address 2: Tapinshwehtee Street, Thamine 1 Yard, Yangon, Myanmar</p>
+                    <p class="component">Copyright &copy; {{ datetime.now().year }} by Leveling Education Service | SK Leveling</p>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <div class="container-fluid">
+                    <form action="/contact" method="post" id="contactForm" validate>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-floating mt-1 mb-3">
+                                    <input type="text" class="form-control" id="nameInput" placeholder="<Name>" name="name" required>
+                                    <label for="nameInput">Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-floating mt-1 mb-3">
+                                    <input type="email" class="form-control" id="emailInput" placeholder="<EMAIL>" name="email" required>
+                                    <label for="emailInput">Email Address</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-floating mt-1 mb-3">
+                                    <input type="text" class="form-control" id="phoneInput" placeholder="<PHONE>" name="phone" required>
+                                    <label for="phoneInput">Phone</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <div class="form-floating mt-1 mb-3">
+                                    <input type="text" class="form-control" id="addressInput" placeholder="<ADDRESS>" name="address" required>
+                                    <label for="addressInput">Address</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mt-1 mb-3">
+                            <input type="text" class="form-control" id="subjectInput" placeholder="<SUBJECT>" name="subject" required>
+                            <label for="subjectInput">Subject</label>
+                        </div>
+                        <div class="form mt-1 mb-3">
+                            <textarea rows="5" class="form-control" id="textareaInput" placeholder="Enter your message here" name="message" required></textarea>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="w-25 btn btn-md btn-primary mt-1" id="contact_button">Send</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-1 col-sm-0">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('contactForm').onsubmit = function() {
+            var submitButton = document.getElementById('contact_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Sending ...';
+            }
+        };
+    </script>
+</body>
+
+{% endblock content %}

@@ -1,0 +1,163 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Dashboard | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link rel="stylesheet" href="/static/style/admin_style.css">
+{% endblock style %}
+
+{% block content %}
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-title">
+                        <h5 class="section-title">Total Client Count</h5>
+                        {% if client_count %}
+                            <p class="section-title">{{ client_count }}</p>
+                        {% else %}
+                            <p class="section-title">There is no client.</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% for package in packages %}
+                    {% if package.client %}
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="section-title">{{ package.name }}</h4>
+                                {% for client in package.client %}
+                                <p class="section-title"><a {% if client.user.google_drive %} href="{{ client.user.google_drive }}" target="_blank"{% endif %} class="no-color-link">{{ client.user.username }}</a></p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+                {% endfor %} 
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-title">
+                        <h5 class="section-title">Total Amount Paid in {{ datetime.now().year }}</h5>
+                        {% if total_amount_eur %}
+                            <p class="section-title">&euro; {{ "{:,.2f}".format(total_amount_eur) }}</p>
+                            <p class="section-title">MMK {{ "{:,.2f}".format(total_amount_mmk) }}</p>
+                        {% else %}
+                            <p class="section-title">There are no payments yet.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-5 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="section-title">Total Profit in {{ datetime.now().year }}</h5>
+                        <div class="container-fluid">
+                            {% if profits %}
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Amount &euro;</th>
+                                            <th scope="col">Amount MMK</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Leveling Education Service</td>
+                                            <td>&euro; {{ "{:,.2f}".format(profits.leveling_profit_eur) }}</td>
+                                            <td>{{ "{:,.2f}".format(profits.leveling_profit_mmk) }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Ayar Yadanar Education Service</td>
+                                            <td>&euro; {{ "{:,.2f}".format(profits.ayes_profit_eur) }}</td>
+                                            <td>{{ "{:,.2f}".format(profits.ayes_profit_mmk) }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            {% else %}
+                                <p class="section-title">There is no profit yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% if clients %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="section-title">Add Google Drive Link</h5>
+                        <form action="/admin/add_google_drive" method="post" id="add_google_drive_form" validate>
+                            <div class="form-control mt-1 mb-3">
+                                <label class="form-label mt-2 mb-2" for="clientSelect">Client</label>
+                                <select class="form-select" id="clientSelect" name="user_id">
+                                    {% for client in clients %}
+                                        <option value="{{ client.id }}">{{ client.user.username.title() }}</option>
+                                    {% endfor %}
+                                </select>                           
+                            </div>
+                            <div class="form-floating mt-1 mb-3">
+                                <input type="text" class="form-control" id="googleDriveInput" placeholder="<GOOGLE_DRIVE>" name="google_drive" required>
+                                <label for="googleDriveInput">Google Drive Link</label>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-50 btn btn-sm btn-primary mt-1" id="add_google_drive_button">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="container-fluid">
+            <div class="row">
+                {% if steps %}
+                <div class="card">
+                    <div class="row">
+                        {% for step in steps %}
+                            {% if step.clients %}
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="card">
+                                        <div class="card-title">
+                                            <div class="container-fluid">
+                                                <h4 class="section-title">Step {{ step.id }}</h4>
+                                                <p class="section-title">Description : {{ step.name }}</p>
+                                            </div>
+                                        </div>
+                                        <div class="card-body">
+                                            {% for client in step.clients %}
+                                            <h5 class="section-title">{{ client.user.username }}</h5>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('add_google_drive_form').onsubmit = function() {
+            var submitButton = document.getElementById('add_google_drive_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Adding ...';
+            }
+        };
+    </script>
+
+{% endblock content %}

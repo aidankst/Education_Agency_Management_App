@@ -1,0 +1,136 @@
+<header>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/invoice_style.css', _external=True) }}">
+</header>
+
+<div class="container-fluid print-content">
+    <div class="card">
+        <div class="card-title">
+            <div class="row margin-top-20">
+                <div class="col-2">
+                    <div class="container-fluid">
+                        <img id="invoice_logo" src="{{ url_for('static', filename='images/logo.png', _external=True) }}" alt="logo-leveling">
+                    </div>
+                </div>
+                <div class="col-6 margin-top-30">
+                    <div class="container-fluid">
+                        <h3 class="brand-color">Leveling Education Service</h3>
+                        <p style="font-size: small;">ul. Zamknieta 10, lok 1.5<br>30-554 Krakow<br>Poland<br>NIP : 677 249 64 12</p>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="container-fluid">
+                        <h5 class="brand-color mt-4">Invoice #{{ session['invoice'].id }}</h5>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <hr>
+            <div class="container-fluid mt-4 mb-4">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="container-fluid">
+                            <h7 class="brand-color">Invoice Number : {{ session['invoice'].id }}</h7><br>
+                            <h7 style="font-size: small;">Date : {{ session['invoice'].date.strftime('%Y-%m-%d') }}</h7><br>
+                            <h7 style="font-size: small;">Terms : Due within {{ session['invoice'].terms }} days</h7><br>
+                            <h7 style="font-size: small;" class="text-danger">Deadline : <b>{{ session['invoice'].deadline.strftime('%Y-%m-%d') }}</b></h7>
+                        </div>
+                        <div class="container-fluid mt-3">
+                            <h7 class="brand-color">Bank Transfer</h7><br>
+                            <h7 style="font-size: small;">Bank Account Holder : <b>Ayar Yandanar Company Limited</b></h7><br>
+                            <h7 style="font-size: small;">Bank Account Number : <b>02251302204229801</b></h7><br>
+                            <h7 style="font-size: small;">Bank : <b>KBZ Bank Limited</b></h7>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="container-fluid bill-to-section">
+                            <h6 class="bill-to-title text-white">Bill To</h6>
+                        </div>
+                        <div class="container-fluid mt-2">
+                            <h5>{{ client.user.username }}</h5>
+                            <h7 style="font-size: small;">{{ client.house_number }}, {{ client.street }}, {{ client.township }}</h7><br>
+                            <h7 style="font-size: small;">{{ client.postcode }}, {{ client.city }}</h7><br>
+                            <h7 style="font-size: small;">{{ client.state }}, {{ client.country }}</h7><br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Package</th>
+                        <th scope="col">Item</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in items %}
+                    <tr>
+                        <td>{{ loop.index }}</td>
+                        <td>{{ item.package.name }}</td>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.description }}</td>
+                        <td>&euro; {{ item.amount_eur }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        {% if session['invoice']['discount'] %}
+                        <td scope="row" colspan="4" class="text-end">Discount : </td>
+                        <td>- &euro; {{ session['invoice']['discount'] }}</td>
+                        {% endif %}
+                    </tr>
+                    <tr class="mt-5">
+                        <td scope="row" colspan="4" class="border-0 text-end">Total : </td>
+                        <td class="border-0"><h4>&euro; {{ session['invoice']['amount_eur'] }}</h4></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <div class="container-fluid">
+                <h5 class="brand-color">Thank you for choosing Leveling Education Service!</h5>
+                <div class="container-fluid">
+                    <h7 class="text-danger">** Notes **</h7><br>
+                    <p style="font-size: smaller;">Please take note of the following instructions for the transaction:<br>
+                        <ul>
+                            <li style="font-size: smaller;">Description: When making the payment, please include the following description on the transaction: <span class="text-danger">"{{ client.user.username }}, {{ session['invoice']['id'] }}"</span>.<br>This will help us easily identify and allocate your payment.</li>
+                        </ul>
+                    </p>
+                </div>
+                <div class="container-fluid">
+                    <h7 class="text-danger">** Terms and Conditions **</h7><br>
+                    <h7 style="font-size: smaller;">1. Payment Terms<br>
+                        <ul>
+                            <li style="font-size: smaller;">Payments must be made before the deadline stated on this invoice.</li>
+                            <li style="font-size: smaller;">If the payment isn't made after 14 days from the deadline, the service and other data will be terminated.</li>
+                        </ul>
+                    </h7>
+                    <h7 style="font-size: smaller;">2. Currency<br>
+                        <ul>
+                            <li style="font-size: smaller;">All payments must be made in Euro (EUR &euro;).</li>
+                            <li style="font-size: smaller;">Alternative currencies (Thai Baht or Burmese Kyat) are accepted at the prevailing exchange rate.</li>
+                        </ul>
+                    </h7>
+                    <h7 style="font-size: smaller;">3. Service Description<br>
+                        <ul>
+                            <li style="font-size: smaller;">This Invoice covers the payment for educational services provided by Leveling Education Service as specified in the Client Panel > Package.</li>
+                        </ul>
+                    </h7>
+                    <h7 style="font-size: smaller;">4. Confidentiality<br>
+                        <ul>
+                            <li style="font-size: smaller;">Both parties agree to maintain confidentiality of shared information as outlined in the Contract.</li>
+                        </ul>
+                    </h7>
+                </div>
+                <br><br><br><p class="text-center" style="font-size: small;">We hope you will enjoy our services!</p>
+                <p class="text-center" style="font-size: small;">NIP : 677 249 64 12 | kontakt@leveling.pl | www.leveling.pl</p>
+                <p class="text-center no-color-text" style="font-size: small;">Invoice was created on a computer and is valid without the signature and seal.</p>
+            </div>
+        </div>
+    </div>
+</div>
+                    

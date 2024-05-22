@@ -1,0 +1,110 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Dashboard | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/style.css">
+    <link rel="stylesheet" href="/static/style/client_style.css">
+{% endblock style %}
+
+{% block content %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+<div class="container-fluid">
+    <div class="row">
+        {% if user.remark %}
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h3 class="section-title">Remark</h3>
+                    <p class="section-title">{{ user.remark }}</p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+    <div class="row">
+        <div class="col-md-7 col-sm-12">
+            <div class="container">
+                <div class="card">
+                    <h3 class="section-title">Current Step</h3>
+                    {% if user.client.steps_id %}
+                    <div class="progress">
+                        <div id="progressBar" class="progress-bar" role="progressbar" style="background-color: parent;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">{{ progress }} %</div>
+                    </div>
+                    <h7 class="section-title">{{ user.client.steps.name }}</h7>
+                    {% else %}
+                    <h7 class="section-title text-danger">Please contact the admins.</h7>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5 col-sm-12">
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Next Step</h3>
+                        {% if next_steps %}
+                            <p class="section-title">{{ next_steps.name }}</p>
+                        {% else %}
+                            <p class="section-title">You have reached to final step or please contact the admins.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-5 col-sm-12">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="section-title">Current Package</h5>
+                    {% if user.client.packages %}
+                        {% for package in user.client.packages %}
+                        <p class="text-center">{{ package.name }}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p class="text-danger text-center">You don't have any packages yet.</p>                    
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="col-md-7 col-sm-12">
+            {% if steps %}
+            <div class="card">
+                <h3 class="section-title">All Steps</h3>
+                <div class="row">
+                    {% for step in steps %}
+                    <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="section-title">Step {{ step.id }}</h4>
+                                <p class="section-title">Description : {{ step.name }}</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var progressBar = document.getElementById('progressBar');
+        progressBar.style.width = '{{ progress }}%';
+    });
+</script>
+
+{% endblock content %}

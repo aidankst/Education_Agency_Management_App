@@ -1,0 +1,131 @@
+{% extends '/admin/payments/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block payments %}
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="card">
+                <div class="card-title">
+                    <h5 class="section-title">Invoice #{{ session['invoice']['id'] }}</h5>
+                </div>
+                <div class="card-body">
+                    <form action="/admin/preview_invoice" method="get" id="invoice_second_step_form" validate>
+                        <div class="section invoice-container">
+                            <div class="row mb-5">
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="row">
+                                        <label for="nameInput" class="col-4 col-form-label text-end">Client : </label>
+                                        <div class="col-8">
+                                            <input type="text" class="form-control" id="nameInput" name="client_name" value="{{ client.user.username.title() }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 col-sm-12">
+                                    <div class="row">
+                                        <label for="packageInput" class="col-4 col-form-label text-end">Package : </label>
+                                        <div class="col-8">
+                                            <input type="text" class="form-control" id="packageInput" name="package_name" value="{{ package.name.title() }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section invoice-container">
+                            <div class="row mb-2">
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="row">
+                                        <label for="dateInput" class="col-5 col-form-label text-end">Invoice Date : </label>
+                                        <div class="col-7">
+                                            <input type="date" class="form-control" id="dateInput" name="date" value="{{ session['invoice']['date'].strftime('%Y-%m-%d') }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <p class="text-center mt-2 mb-2">Terms: Due within {{ session['invoice']['terms'] }} days</p>
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="row">
+                                        <label for="deadlineInput" class="col-5 col-form-label text-end">Deadline : </label>
+                                        <div class="col-7">
+                                            <input type="date" class="form-control" id="deadlineInput" name="deadline" value="{{ session['invoice']['deadline'].strftime('%Y-%m-%d') }}" readonly>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="section invoice-container">
+                            <h5 class="section-title">Items</h5>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in package.items %}
+                                        <tr>
+                                            <td><input type="checkbox" id="{{ item.id }}" name="items" value="{{ item.id }}"></td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.description }}</td>
+                                            <td>&euro; {{ item.amount_eur }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                                <div id="warningMessage" class="section-title" style="color: red; display: none;">Please select at least one item.</div>
+                            </table>
+                        </div>
+                        <div class="section invoice-container">
+                            <div class="row mb-5">
+                                <div class="col-md-8 col-sm-0">
+                                </div>
+                                <div class="col-md-4 col-sm-12">
+                                    <div class="row">
+                                        <label for="discountInput" class="col-4 col-form-label text-end">Discount &euro; : </label>
+                                        <div class="col-8">
+                                            <input type="number" class="form-control" id="discountInput" name="discount" optional>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="w-25 btn btn-sm btn-primary mt-1" id="invoice_second_step_button">Preview Invoice</button>
+                        </div>
+                    </form>
+                </div>
+            </div>  
+        </div>
+    </div>
+    <script>
+        document.getElementById('invoice_second_step_form').onsubmit = function() {
+        var submitButton = document.getElementById('invoice_second_step_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Calculating ...';
+        }
+        };
+        document.getElementById('invoice_second_step_form').addEventListener('submit', function(event) {
+            const checkboxes = document.querySelectorAll('input[name="items"]:checked');
+            if (checkboxes.length === 0) {
+                event.preventDefault(); // Prevent form submission
+                document.getElementById('warningMessage').style.display = 'block'; // Show warning message
+                var submitButton = document.getElementById('invoice_second_step_button');
+                submitButton.disabled = false;
+                submitButton.textContent = 'Preview Invoice';
+            } else {
+                document.getElementById('warningMessage').style.display = 'none'; // Hide warning message
+            }
+        });
+    </script>
+</body>
+
+{% endblock payments %}

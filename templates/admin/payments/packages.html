@@ -1,0 +1,84 @@
+{% extends '/admin/payments/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block payments %}
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-title">
+                <h3 class="section-title">Packages</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% if packages %}
+                        {% for package in packages %}
+                        <div class="col-md-6 col-sm-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="section-title">{{ package.name }}</h6>
+                                    <table class="table">
+                                        <tbody>
+                                            <tr>
+                                                <th>Description : </th>
+                                                <td>{{ package.description }}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Amount : </th>
+                                                <td>&euro; {{ package.amount_eur }}</td>
+                                            </tr>
+                                            {% if package.services %}
+                                            <tr>
+                                                <th colspan="2">Services</th>
+                                            </tr>
+                                            {% for service in package.services %}
+                                            <tr>
+                                                <td colspan="2" class="no-color-text">{{ service.name }}</td>
+                                            </tr>
+                                            {% endfor %}
+                                            {% endif %}
+                                        </tbody>
+                                    </table>
+                                    <form action="/admin/delete_package/{{ package.id }}" method="POST" id="deleteService">
+                                        <div class="d-flex justify-content-center align-items-center">
+                                            <button type="submit" class="w-50 btn btn-sm btn-danger mt-1" id="deleteServiceButton">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% include 'admin/payments/package_forms.html' %}
+
+    <script>
+        document.getElementById('add_new_service_form').onsubmit = function() {
+            var submitButton = document.getElementById('add_new_service_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Adding ...';
+            }
+        };
+    </script>
+</body>
+
+{% endblock payments %}

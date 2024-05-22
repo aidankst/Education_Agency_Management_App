@@ -1,0 +1,39 @@
+{% extends '/admin/payments/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block title %}
+Invoice #{{ session['invoice']['id'] }} | {{ client.user.username }}
+{% endblock title %}
+
+{% block payments %}
+
+<body>
+    <div class="print-content">
+        {% include '/admin/payments/invoice_template.html' %}
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="float-end mb-5">
+                <a href="javascript:window.print()" class="btn btn-success me-1 print-none"><i class="fa fa-print"></i></a>
+                <div class="d-flex justify-content-center align-items-center">
+                    <a href="/admin/send_invoice" class="w-50 btn btn-primary me-2 print-none" id="sendInvoice">Send</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('sendInvoice').onclick = function() {
+            var deleteService = document.getElementById('sendInvoice');
+            if (deleteService) {
+                deleteService.textContent = 'Sending ...';
+            }
+        };
+    </script>
+</body>
+
+{% endblock payments %}

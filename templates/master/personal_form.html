@@ -1,0 +1,389 @@
+<div class="container-fluid">
+    <div class="card">
+        <div class="card-body">
+            <h3 class="section-title">Personal Form</h3>
+            {% if current_user.role == 'client' %}
+                {% if client.steps_id == 1 %}
+                    <p class="text-danger text-center">Please fill in the form carefully. You cannot edit the form after filling.</p>
+                {% else %}
+                    <p class="text-danger text-center">Please contact the admins to change the data.</p>                    
+                {% endif %}
+            {% endif %}
+            <form action ="/change_data" method="POST" id="personal_form" validate>
+                <div class="section-container">
+                    <h5 class="text-white">Account Details</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-12">
+                            <div class="mb-3">
+                                <label for="nameInput" class="form-label">Name</label>
+                                <input type="text" class="form-control" id="nameInput" name="name" value="{{ user.username }}" {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="idInput" class="form-label">User ID</label>
+                                <input type="text" class="form-control" id="idInput" name="id" value="{{ user.id }}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="emailInput" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="emailInput" name="email" value="{{ user.email }}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="mb-3">
+                                <label for="roleInput" class="form-label">Role</label>
+                                <input type="text" class="form-control" id="roleInput" name="role" value="{{ user.role.capitalize() }}" readonly>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-12">
+                            <div class="mb-3">
+                                <label for="roleInput" class="form-label">Status</label>
+                                <input type="text" class="form-control" id="roleInput" name="role" value="{% if user.active %}ACTIVATED{% else %}DEACTIVATED{% endif %}" readonly>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {% if user.role == 'client' %}
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="nationalIdInput" class="form-label">National ID</label>
+                                <input type="text" class="form-control" id="nationalIdInput" name="national_id" {% if client.national_id %} value="{{ client.national_id }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="phoneInput" class="form-label">Phone</label>
+                                <input type="text" pattern="\d*"  class="form-control" id="phoneInput" name="phone" {% if client.phone %} value="{{ client.phone }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="dateOfBirthInput" class="form-label">Date of Birth</label>
+                                <input type="date" class="form-control" id="dateOfBirthInput" name="date_of_birth" {% if client.date_of_birth %} value="{{ client.date_of_birth.strftime('%Y-%m-%d') }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <h5 class="text-white">Passport Details</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="passportNumberInput" class="form-label">Passport Number</label>
+                                <input type="text" class="form-control" id="passportNumberInput" name="passport_num" {% if client.passport_num %} value="{{ client.passport_num }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label class="form-label" for="passportTypeSelect">Passport Type</label>
+                                {% if client.steps_id != 1 and current_user.role == 'client' %}
+                                <input type="text" class="form-control" id="passportTypeSelect" name="passport_type" value="{{ client.passport_type.name }}" readonly>
+                                {% else %}
+                                    <select class="form-select" id="passportTypeSelect" name="passport_type">
+                                        {% for passport_type in passport_types %}
+                                            {% if passport_type.name == client.passport_type and client %}
+                                                <option value="{{ passport_type.id }}" selected>{{ passport_type.name }}</option>
+                                            {% else %}
+                                                <option value="{{ passport_type.id }}">{{ passport_type.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="passportIssueDateInput" class="form-label">Issue Date</label>
+                                <input type="date" max='datetime.now()' class="form-control" id="passportIssueDateInput" name="passport_issue_date" {% if client.passport_issue_date %} value="{{ client.passport_issue_date.strftime('%Y-%m-%d') }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="passportExpiryDateInput" class="form-label">Expiry Date</label>
+                                <input type="date" max='datetime.now()' class="form-control" id="passportExpiryDateInput" name="passport_expiry_date" {% if client.passport_expiry_date %} value="{{ client.passport_expiry_date.strftime('%Y-%m-%d') }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="placeOfBirthInput" class="form-label">Place of Birth</label>
+                                <input type="text" class="form-control" id="placeOfBirthInput" name="place_of_birth" {% if client.place_of_birth %} value="{{ client.place_of_birth }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="passportCountryInput" class="form-label">Passport Issue Country</label>
+                                <input type="text" class="form-control" id="passportCountryInput" name="passport_country" {% if client.passport_country %} value="{{ client.passport_country }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <h5 class="text-white">Address</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="houseNumberInput" class="form-label">House Number</label>
+                                <input type="text" class="form-control" id="houseNumberInput" name="house_number" {% if client.house_number %} value="{{ client.house_number }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="streetInput" class="form-label">Street</label>
+                                <input type="text" class="form-control" id="streetInput" name="street" {% if client.street %} value="{{ client.street }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="postCodeInput" class="form-label">Post Code</label>
+                                <input type="text" class="form-control" id="postCodeInput" name="postcode" {% if client.postcode %} value="{{ client.postcode }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="townshipInput" class="form-label">Township</label>
+                                <input type="text" class="form-control" id="townshipInput" name="township" {% if client.township %} value="{{ client.township }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="CityInput" class="form-label">City</label>
+                                <input type="text" class="form-control" id="CityInput" name="city" {% if client.city %} value="{{ client.city }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="stateInput" class="form-label">State</label>
+                                <input type="text" class="form-control" id="stateInput" name="state" {% if client.state %} value="{{ client.state }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-4 col-sm-12">
+                            <div class="mb-3">
+                                <label for="countryInput" class="form-label">Country</label>
+                                <input type="text" class="form-control" id="countryInput" name="country" {% if client.country %} value="{{ client.country }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <h5 class="text-white">Parent Information</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="fatherNameInput" class="form-label">Father Name</label>
+                                <input type="text" class="form-control" id="fatherNameInput" name="father_name" {% if client.father_name %} value="{{ client.father_name }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="fatherIdInput" class="form-label">Father's NRC ID</label>
+                                <input type="text" class="form-control" id="fatherIdInput" name="father_id" {% if client.father_id %} value="{{ client.father_id }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id != 1 %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="motherNameInput" class="form-label">Mother Name</label>
+                                <input type="text" class="form-control" id="motherNameInput" name="mother_name" {% if client.mother_name %} value="{{ client.mother_name }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="motherIdInput" class="form-label">Mother's NRC ID</label>
+                                <input type="text" class="form-control" id="motherIdInput" name="mother_id" {% if client.mother_id %} value="{{ client.mother_id }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id != 1 %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <h5 class="text-white">Majors and Universities</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="majorTypeInput" class="form-label">Major Type</label>
+                                {% if client.steps_id != 1 and current_user.role == 'client' %}
+                                <input type="text" class="form-control" id="majorTypeInput" name="major_type" value="{{ client.major_type.title() }}" readonly>
+                                {% else %}
+                                    <select class="form-select" id="majorTypeInput" name="major_type">
+                                        {% for majorType in majorTypes %}
+                                            {% if majorType == client.major_type and client.majorType %}
+                                                <option value="{{ majorType }}" selected>{{ majorType.title() }}</option>
+                                            {% else %}
+                                                <option value="{{ majorType }}" >{{ majorType.title() }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="majorNameInput" class="form-label">Major</label>
+                                {% if client.steps_id != 1 and current_user.role == 'client' %}
+                                <input type="text" class="form-control" id="majorNameInput" name="major_name" value="{{ client.major_name.title() }}" readonly>
+                                {% else %}
+                                    <select class="form-select" id="majorNameInput" name="major_name">
+                                        {% for major in majors %}
+                                            {% if major == client.major_name and client.major_name %}
+                                                <option value="{{ major }}" selected>{{ major.title() }}</option>
+                                            {% else %}
+                                                <option value="{{ major }}" >{{ major.title() }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="priorityUni1Input" class="form-label">First Priority University</label>
+                            <input type="text" class="form-control" id="priorityUni1Input" name="priority_uni1" {% if client.priority_uni1 %} value="{{ client.priority_uni1 }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="priorityUni2Input" class="form-label">Second Priority University</label>
+                            <input type="text" class="form-control" id="priorityUni2Input" name="priority_uni2" {% if client.priority_uni2 %} value="{{ client.priority_uni2 }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3">
+                            <label for="priorityUni3Input" class="form-label">Third Priority University</label>
+                            <input type="text" class="form-control" id="priorityUni3Input" name="priority_uni3" {% if client.priority_uni3 %} value="{{ client.priority_uni3 }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                        </div>
+                    </div>
+                </div>
+                <div class="section-container">
+                    <h5 class="text-white">Previous High School / University</h5>
+                </div>
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="institutionInput" class="form-label">Institution Name</label>
+                                <input type="text" class="form-control" id="institutionInput" name="institution" {% if client.institution %} value="{{ client.institution }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="institutionCityInput" class="form-label">Institution City</label>
+                                <input type="text" class="form-control" id="institutionCityInput" name="institution_city" {% if client.institution_city %} value="{{ client.institution_city }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12">
+                            <div class="mb-3">
+                                <label for="institutionCountryInput" class="form-label">Institution Country</label>
+                                <input type="text" class="form-control" id="institutionCountryInput" name="institution_country" {% if client.institution_country %} value="{{ client.institution_country }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id == 1 %}required{% else %}readonly{% endif %}{% endif %}>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12">
+                            <div class="mb-3">
+                                <label for="generalDescriptionInput" class="form-label">General Information</label>
+                                <textarea rows="5" class="form-control" id="generalDescriptionInput" placeholder="If you have changed multiple schools during your high school, please let us know here." name="general_description" {% if client.general_description %} value="{{ client.general_description }}" {% endif %} {% if current_user.role == 'client' %}{% if client.steps_id != 1 %}readonly{% endif %}{% endif %}></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    {% if current_user.role == 'admin' %}
+                        <div class="col-5">
+                            <div class="d-flex justify-content-center align-items-center" >
+                                <a href="/admin/all_users" class="w-25 btn btn-md btn-primary" id="backButton">Back</a>
+                            </div>
+                        </div>
+                        <div class="col-7">
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-25 btn btn-md btn-primary"  id="editButton">Edit User</button>
+                            </div>
+                        </div>
+                    {% else %}
+                        {% if client.steps_id == 1 %}
+                            <div class="col-12">
+                                <div class="d-flex justify-content-center align-items-center">
+                                    <button type="submit" class="w-25 btn btn-md btn-primary" id="submitButton">Submit</button>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                {% else %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-flex justify-content-center align-items-center" >
+                                <a href="/admin/all_users" class="w-25 btn btn-md btn-primary" id="backButton">Back</a>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    const dateOfBirthInput = document.getElementById('dateOfBirthInput');
+    const passportIssueDateInput = document.getElementById('passportIssueDateInput');
+    const passportExpiryDateInput = document.getElementById('passportExpiryDateInput');
+
+    const today = new Date();
+
+    const todayDate = today.toISOString().split('T')[0];  // Format to "YYYY-MM-DD"
+
+    dateOfBirthInput.setAttribute('max', todayDate);
+    passportIssueDateInput.setAttribute('max', todayDate);
+    passportExpiryDateInput.setAttribute('min', todayDate);
+
+
+    document.getElementById('personal_form').onsubmit = function() {
+        var submitButton = document.getElementById('backButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Taking Back ...';
+        }
+    };
+    document.getElementById('personal_form').onsubmit = function() {
+        var submitButton = document.getElementById('editButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Editing User ...';
+        }
+    };
+    document.getElementById('personal_form').onsubmit = function() {
+        var submitButton = document.getElementById('submitButton');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting Form ...';
+        }
+    };
+</script>
+

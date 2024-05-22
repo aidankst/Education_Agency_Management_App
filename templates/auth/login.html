@@ -1,0 +1,59 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Login | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="login_register">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container" id="container">
+        <h1>Login</h1>
+        <div class="container-fluid">
+            <form action="/login" method="post" id="login_form" validate>
+                <div class="form-floating mt-1 mb-3">
+                    <input type="email" class="form-control" id="emailInput" placeholder="<EMAIL>" name="email" required>
+                    <label for="emailInput">Email address</label>
+                </div>
+                <div class="form-floating mt-4 mb-3">
+                    <input type="password" class="form-control" id="passwordInput" placeholder="<Password>" name="password" required>
+                    <label for="passwordInput">Password</label>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button type="submit" class="w-50 btn btn-lg btn-primary mt-1" id="login_button">Login</button>
+                </div>
+            </form>
+            <div class="d-flex justify-content-center align-items-center">
+                <a class="no-color-link text" href="/forgot_password">Forgot your password?</a>
+                <a class="no-color-link text" href="/register">Don't have an account?</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('login_form').onsubmit = function() {
+            var submitButton = document.getElementById('login_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Logging In ...';
+            }
+        };
+    </script>
+</body>
+
+
+{% endblock %}

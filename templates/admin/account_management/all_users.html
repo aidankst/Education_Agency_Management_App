@@ -1,0 +1,76 @@
+{% extends '/admin/account_management/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block account_management %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="section-title">All Users</h3>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">User ID</th>
+                            <th scope="col">Name</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Role</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Last Logged In</th>
+                            <th scope="col">Confirmed Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users %}
+                            {% for user in users %}
+                                <tr data-href="/admin/edit_user/{{ user.id }}">
+                                    <td>{{ user.id }}</td>
+                                    <td>{{ user.username }}</td>
+                                    <td>{{ user.email }}</td>
+                                    <td>{{ user.role.capitalize() }}</td>
+
+                                    {% if user.active %}
+                                    <td class="bg-success text-white text-center">ACTIVATED</td>
+                                    {% else %}
+                                    <td class="bg-danger text-white text-center">DEACTIVATED</td>
+                                    {% endif %}
+                                    
+                                    {% if user.last_login_at %}
+                                    <td>{{ user.last_login_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    {% else %}
+                                    <td class="text-danger">User has not logged in.</td>
+                                    {% endif %}
+
+                                    {% if user.confirmed_at %}
+                                    <td>{{ user.confirmed_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                    {% else %}
+                                    <td class="text-danger">Account has not confirmed.</td>
+                                    {% endif %}
+                                </tr> 
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align: center;">No pending users</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          const rows = document.querySelectorAll('table tr[data-href]');
+          rows.forEach(row => {
+            row.addEventListener('click', function () {
+              window.location.href = this.dataset.href;
+            });
+          });
+        });
+    </script>
+
+{% endblock account_management %}

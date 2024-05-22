@@ -1,0 +1,139 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-title">
+                    <h3 class="section-title">Add Service to Package</h3>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <form action="/admin/add_service_to_package" method="post" id="add_service_to_package_form" validate>
+                            <div class="form-control mt-1 mb-3">
+                                <label class="form-label mt-2 mb-2" for="packageSelect">Package</label>
+                                <select class="form-select" id="packageSelect" name="package_id" required>
+                                    {% for package in packages %}
+                                        <option value="{{ package.id }}">{{ package.name.title() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-control mt-1 mb-3">
+                                {% if services %}
+                                    <label class="form-label mt-2 mb-2" for="serviceSelect">Service</label>
+                                    <select class="form-select" id="serviceSelect" name="service_id" required>
+                                            {% for service in services %}
+                                                <option value="{{ service.id }}">{{ service.name.title() }}</option>
+                                            {% endfor %}
+                                    </select>
+                                {% else %}
+                                <label class="form-label mt-2 mb-2">--- Add service to choose! ---</label>
+                                {% endif %}
+                            </div>
+                            {% if services %}
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-50 btn btn-sm btn-primary mt-1" id="add_service_to_package_button">Add</button>
+                            </div>
+                            {% endif %}
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-title">
+                    <h3 class="section-title">Remove Service from Package</h3>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <form action="/admin/remove_service_from_package" method="post" id="remove_service_from_package_form" validate>
+                            <div class="form-control mt-1 mb-3">
+                                <label class="form-label mt-2 mb-2" for="packageSelect">Package</label>
+                                <select class="form-select" id="packageSelect" name="package_id" required>
+                                    {% for package in packages %}
+                                        <option value="{{ package.id }}">{{ package.name.title() }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-control mt-1 mb-3">
+                                {% if services %}
+                                    <label class="form-label mt-2 mb-2" for="serviceSelect">Service</label>
+                                    <select class="form-select" id="serviceSelect" name="service_id" required>
+                                        {% for service in services %}
+                                            <option value="{{ service.id }}">{{ service.name.title() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                <label class="form-label mt-2 mb-2">--- Add service to choose! ---</label>
+                                {% endif %}
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-50 btn btn-sm btn-danger mt-1" id="remove_service_from_package_button">Remove</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-sm-12">
+            <div class="card">
+                <div class="card-title">
+                    <h3 class="section-title">Add New Package</h3>
+                </div>
+                <div class="card-body">
+                    <div class="container-fluid">
+                        <form action="/admin/add_new_package" method="post" id="add_new_package_form" validate>
+                            <div class="form-floating mt-1 mb-3">
+                                <input type="text" class="form-control" id="nameInput" placeholder="<NAME>" name="name" required>
+                                <label for="nameInput">Name</label>
+                            </div>
+                            <div class="form-floating mt-1 mb-3">
+                                <input type="text" class="form-control" id="descriptionInput" placeholder="<DESCRIPTION>" name="description" required>
+                                <label for="descriptionInput">Description</label>
+                            </div>
+                            <div class="form-floating mt-1 mb-3">
+                                <input type="number" class="form-control" id="amountInput" placeholder="<AMOUNT>" name="amount" required>
+                                <label for="amountInput">Amount &euro;</label>
+                            </div>
+                            {% if services %}
+                            <div class="form-control mt-1 mb-3 choice-container">
+                                <label>Choose Services</label>
+                                {% for service in services %}
+                                <p>
+                                    <input type="checkbox" id="{{ service.id }}" name="services" value="{{ service.id }}">
+                                    <label for="{{ service.id }}">{{ service.name.title() }}</label>
+                                </p>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-50 btn btn-sm btn-primary mt-1" id="add_new_package_button">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('add_new_package_form').onsubmit = function() {
+        var submitButton = document.getElementById('add_new_package_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding ...';
+        }
+    };
+    document.getElementById('add_service_to_package_form').onsubmit = function() {
+        var submitButton = document.getElementById('add_service_to_package_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Adding ...';
+        }
+    };
+    document.getElementById('remove_service_from_package_form').onsubmit = function() {
+        var submitButton = document.getElementById('remove_service_from_package_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Removing ...';
+        }
+    };
+</script>

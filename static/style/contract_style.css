@@ -1,0 +1,69 @@
+.bill-to-section {
+    background-color: #f9bdac;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+}
+.total-container {
+    background-color: #f9bdac;
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+}
+
+.bill-to-title {
+    padding: 10px 0px;
+    margin: 0 10px;
+}
+
+tr {
+    color: #eb5324;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+
+@media print {
+    @page{
+        size: A3 portrait;
+        margin: 30pt 0;
+    }
+
+    .extra-charges-section {
+        page-break-before: always;
+    }
+
+    /* Hide everything initially */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Ensure the invoice container and all its children are visible */
+    .print-content, .print-content * {
+        visibility: visible;
+    }
+
+    .print-content .card {
+        visibility: hidden;
+    }
+
+    #contract_logo {
+        width: auto;
+        height: 200px !important;
+    }
+
+    h3, h4{
+        font-size: x-large !important;
+    }
+    table{
+        font-size: medium !important;
+    }
+    .print-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+} 

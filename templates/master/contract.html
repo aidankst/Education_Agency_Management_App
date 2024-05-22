@@ -1,0 +1,184 @@
+<header>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style/contract_style.css') }}">
+</header>
+
+<div class="container-fluid print-content contract-text" id="contract">
+    <div class="card">
+        <div class="card-title">
+            <div class="row mt-2">
+                <div class="col-2">
+                    <div class="container-fluid">
+                        <img id="contract_logo" src="{{ url_for('static', filename='images/logo.png', _external=True) }}" alt="logo-leveling">
+                    </div>
+                </div>
+                <div class="col-10 mt-4">
+                    <div class="container-fluid text-end">
+                        <h3 class="brand-color">Leveling Education Service</h3>
+                        <h7 style="font-size: small;">ul. Zamknieta 10, lok 1.5<br>30-554 Krakow<br>Poland<br></h7>
+                        <h7 style="font-size: small;">kontakt@leveling.pl<br>www.leveling.pl<br></h7>
+                        <h7 style="font-size: small;">NIP : 677 249 64 12</h7>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="container-fluid contract-body">
+                <h3 class="section-title brand-color mb-5">SERVICE AGREEMENT CONTRACT</h3>
+                <p>This Contract ("Service Agreement Contract") is entered into as of the {{ user.client.contract_date.strftime('%Y-%m-%d') }} ("Effective Date"), by and between:</p>
+                <p>Party A:<br>Name : {{ user.username }} ("Client")<br>Passport : {{ user.client.passport_num}}</p>
+                <p>Party B:<br>Name : <strong>Leveling Education Service</strong> ("Service Provider")<br>ul. Zamknieta 10, lok 1.5<br>30-554 Krakow<br>Poland<br>NIP : 677 249 64 12</p>
+                <p>WHEREAS, the Student desires to engage the services of the Service Provider as specified herein; and</p>
+                <p>WHEREAS, the Service Provider agrees to provide the services to the Student, subject to the terms and conditions set forth in this Contract.</p>
+                <p>NOW, THEREFORE, in consideration of the mutual promises and covenants contained herein, the Student and the Service Provider (collectively referred to as the "Parties") agree as follows:</p>
+                <ol>
+                    <li class="mt-4 mb-4"><strong>Scope of Service</strong>
+                        <ol>
+                            {% for package in user.client.packages %}
+                            <li>{{ package.name.title() }}</li>
+                                <ol>
+                                    {% for service in package.services %}
+                                        <li>{{ service.name.title() }}</li>
+                                    {% endfor %}
+                                </ol>
+                            {% endfor %}
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Mode of Service</strong>
+                        <ol>
+                            <li>The services provided by Leveling Education Service will primarily be conducted online. However, it is mandatory for the student, herein referred to as the client, to make an initial visit to the office. This visit is crucial for gathering necessary information from the client, finalizing the contract, and addressing any other pertinent matters.</li>
+                            <li>The administrative team for Leveling Education Service is based in both Myanmar and Poland, with the main administrators operating from Poland. Clients are required to liaise with the administrators in Myanmar for updates on their application status and for any queries they may have.</li>
+                            <li>It is important to note that the mode of communication with the administrators in Poland is limited to email and website chat. For any discussions via Zoom, clients must book a slot through the website in advance.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Communication and Contact</strong>
+                        <ol>
+                            <li>Clients may reach out to the administrators in Myanmar through various methods such as email, phone, or website chat. This allows for a flexible and convenient communication channel that caters to the client's preferences. The administrators in Myanmar will be responsible for tracking the application status and answering any queries that the clients may have.</li>
+                            <li>For communication with administrators in Poland, clients are limited to email and website chat. This is to ensure that the administrators can efficiently manage their tasks and respond to all inquiries in a timely manner.</li>
+                            <li>In the event that a client wishes to have a Zoom meeting with the administrators in Poland, they must book a term through the website. This is to ensure that the administrators can prepare for the meeting and provide the best service possible.</li>
+                            <li>It is important to note that all communication should be professional and respectful. Any form of harassment or inappropriate behavior will not be tolerated and may result in termination of the service.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Term of Contract</strong>
+                        <ol>
+                            <li>This Contract shall commence on the Effective Date and remain in effect until one year from the Effective Date, unless earlier terminated in accordance with the provisions herein. Upon the expiration of the initial term, the Contract may be renewed upon mutual agreement of the Parties, subject to any necessary amendments according to section 11.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Termination</strong>
+                        <ol>
+                            <li>The termination of the contract can be initiated by either the student (client) or Leveling Education Service. However, it is important to note that the student will not be eligible for a refund upon cancellation of the service. This is to ensure that the student is fully committed to the process and understands the implications of their decision to engage the services of Leveling Education Service.</li>
+                            <li>On the other hand, the Leveling Education Service reserves the right to terminate the contract without a refund if the student fails to adhere to the terms of the contract. This includes, but is not limited to, failure to provide necessary documents, failure to make payments within the stipulated time, or any other breach of the contract terms. The termination will be effective immediately upon notification to the student.</li>
+                            <li>It is therefore crucial for the student to fully understand and agree to the terms of the contract before signing it. This will prevent any misunderstandings or disputes that may arise during the course of the service.</li>
+                        </ol>
+                    </li>
+                    {% for package in user.client.packages %}
+                    <li class="mt-4 mb-4"><strong>Payment Terms</strong>
+                        <ol>
+                            <li>Payments for the services provided by Leveling Education Service are to be made before the deadline stated in the invoice. The service fee is set at {{ package.amount_eur }} euros (&euro;), with an initial payment of 1200.0 euros (&euro;) required at the commencement of the service. The remaining balance of {{ package.amount_eur - 1200 }} euros is to be paid immediately after the student has been accepted to the university.</li>
+                            <li>In addition to the service fee, there may be extra charges amounting to approximately {% if package.amount_eur == 1500.0 %}1330.0{% else %}1500.0{% endif %} euros (&euro;). These charges are not included in the service fee and are levied for additional costs that may arise during the application process. The payment for these extra charges can be made in three installments: an initial payment of 700.0 euros (&euro;) at the start of the service, a second payment of 500.0 euros (&euro;) after the student has been accepted by the university, and the remaining balance of {% if package.amount_eur == 1800.0 %}300.0{% else %}130.0{% endif %} euros (&euro;) after the student has been accepted by the university. A detailed breakdown of the extra charges will be provided in a separate document accompanying this contract.</li>
+                            <li>Installment payments are allowed, providing flexibility for the students. However, it is important to note that all payments are non-refundable, as per the termination policy of the contract.</li>
+                            <li>It is the responsibility of the student to ensure that all payments are made on time and in full, to avoid any disruption in the services provided by Leveling Education Service.</li>
+                        </ol>
+                    </li>
+                    {% endfor %}
+                    <li class="mt-4 mb-4"><strong>Currency</strong>
+                        <ol>
+                            <li>All payments related to the services provided by Leveling Education Service shall be made in Euros (EUR). However, the client (student) has the option to make payments in either Thai Baht (THB) or Burmese Kyat (MMK), based on the prevailing market exchange rate at the time of the transaction.</li>
+                            <li>It is important to note that the client will be responsible for any transaction fees or currency conversion charges that may be incurred during the payment process. These charges are typically levied by banks or financial institutions involved in the transaction and are not under the control of Leveling Education Service.</li>
+                            <li>In the event of any disputes regarding the exchange rate used for a transaction, the rate provided by the National Bank of Poland and National Bank of Myanmar on the date of the transaction will be considered as the reference rate.</li>
+                            <li>This provision ensures that the financial transactions are transparent and fair, and protects the interests of both the service provider and the client.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Confidentiality</strong>
+                        <ol>
+                            <li>Both parties involved in this contract, Leveling Education Service and the student, agree to maintain the confidentiality of any information disclosed during the course of providing the services under this Contract. This includes, but is not limited to, personal information, application details, visa details, and any other sensitive information that may be shared during the process.</li>
+                            <li>The confidential information shall not be disclosed to any third party without the express written consent of the party that disclosed the information. This means that Leveling Education Service will not share the student's information without their permission, and the student will not share any proprietary information about Leveling Education Service's processes or operations without their permission.</li>
+                            <li>Any breach of this confidentiality agreement may result in immediate termination of the contract, as outlined in the Termination section of this contract. Both parties understand the importance of maintaining confidentiality and agree to uphold this aspect of the contract to the best of their abilities.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Refund Policy</strong>
+                        <ol>
+                            <li>The refund policy for Leveling Education Service is designed to protect both the service provider and the client. The package is non-refundable if the student decides to cancel due to personal reasons. This is to ensure that the service provider is compensated for the time and resources already invested in the student's application process.</li>
+                            <li>In the event that Leveling Education Service decides to terminate the contract due to the student's failure to maintain confidentiality of the services, both offline and online, the package remains non-refundable. This clause is in place to protect the proprietary processes and strategies of Leveling Education Service.</li>
+                            <li>However, if the student's visa application is rejected by the embassy, Leveling Education Service will assist the student in obtaining a refund from the tuition fees and health insurance fees. This is to ensure that the student does not suffer financial loss due to circumstances beyond their control. It should be noted that any applicable bank fees or transaction charges incurred during the refund process will be borne by the student.</li>
+                            <li>Lastly, the Service Provider reserves the right to deduct any outstanding amounts owed by the Client from the refundable fees before issuing the refund. This is to ensure that the service provider is not left out of pocket due to the student's failure to fulfill their financial obligations.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Change of Intakes</strong>
+                        <ol>
+                            <li>In the event that the Client wishes to change intakes after acceptance from the university or during the application process due to personal reasons, and subsequently extends this Contract, an additional fee for the University Application must be made. The specific amount of the additional fee for the University Application shall be communicated to the Client by the Service Provider. This is to cover the administrative costs and additional work required to facilitate the change of intakes. The Client is advised to carefully consider their decision before making a request for a change of intakes, as this could potentially delay their study plans and increase their overall costs.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Responsibility for Visa Rejection</strong>
+                        <ol>
+                            <li>The Service Provider, Leveling Education Service, will not be held accountable for the rejection of the Poland National Visa Type D - Study if the Client fails to provide the necessary documents as required by the embassy. It is the Client's responsibility to ensure that all required documents are complete, accurate, and submitted within the stipulated time frame.</li>
+                            <li>Furthermore, the Service Provider will not be held responsible if the embassy rejects the visa despite the Client meeting all official requirements. The decision to grant or reject a visa is solely under the discretion of the embassy. The Service Provider's role is to assist and guide the Client through the application process, but it does not have any influence over the embassy's decision.</li>
+                            <li>In the event of a visa rejection, the Service Provider will assist the Client in understanding the reasons for the rejection and guide them through the process of reapplication, if applicable. However, any additional costs incurred in the process of reapplication will be borne by the Client.</li>
+                            <li>It is therefore crucial for the Client to understand and accept these terms regarding visa rejection before entering into this contract with the Service Provider.</li>
+                        </ol>
+                    </li>
+                    <li class="mt-4 mb-4"><strong>Contract Extension</strong>
+                        <ol>
+                            <li>In the event that the Client wishes to extend the duration of the contract, the following conditions shall apply:
+                                <ol>
+                                    <li>The Client may request for an extension of the contract under the same terms and conditions as stipulated in the "Change of Intakes" section. This means that if the Client chooses to change intakes after acceptance from the university or during the application process due to personal reasons, and subsequently extends this Contract, an additional fee for the University Application must be made.</li>
+                                    <li>The specific amount of the additional fee for the University Application shall be communicated to the Client by the Service Provider. The Client is required to pay this additional fee within the stipulated time frame to ensure the continuation of the services provided by Leveling Education Service.</li>
+                                </ol>
+                            </li>
+                            <li>It is important to note that the decision to extend the contract is at the sole discretion of Leveling Education Service. The Service Provider reserves the right to refuse the extension of the contract if it deems that the Client has not complied with the terms and conditions of the contract or if it is not in the best interest of the Service Provider to continue providing the services.</li>
+                            <li>In the event that the contract is extended, all terms and conditions of the original contract shall remain in effect unless otherwise stated by the Service Provider. The Client is advised to read and understand all terms and conditions before requesting for an extension of the contract.</li>
+                        </ol>
+                    </li>
+                </ol>
+                <p>
+                    By signing this contract, the student agrees to abide by all the terms and conditions set forth in this contract. Any breach of this contract by the student may result in termination of services without a refund. Leveling Education Service is committed to providing quality services and assisting the student in their journey to study in Poland.
+                </p>
+                <p>
+                    IN WITNESS WHEREOF, the Parties hereto have executed this Contract as of the Effective Date.
+                </p>
+                <div class="row">
+                    <div class="col-6">
+                        <p>Party A:<br>Name : {{ user.username }} ("Client")<br>Passport : {{ user.client.passport_num}}</p>
+                    </div>
+                    <div class="col-6">
+                        <p>Party B:<br>Name : <strong>Leveling Education Service</strong><br>NIP : 677 249 64 12</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        <p>Signature : ------------------------------</p>
+                    </div>
+                    <div class="col-6">
+                        <p>Authorized Personnel : -------------------------</p>
+                    </div>
+                </div>
+                <div class="row extra-charges-section">
+                    <h3 class="brand-color section-title">Items included in the Extra Charges</h3>
+                    <li style="list-style: none;"><strong>Extra Charges Included :</strong>
+                        <ul>
+                            <li>Essential / Necessary Notary Fees</li>
+                            <li>Unlimited MOFA Fees</li>
+                            <li>Flight Booking (BKK - RGN, BKK - PL)</li>
+                            <li>Thailand Entrance Visa Fees x1</li>
+                            <li>University application fees</li>
+                            <li>Unlimited DHL fees for the application purpose</li>
+                            <li>1-year Health Insurance for Poland x1</li>
+                            <li>Legalization at Poland Embassy (Authentication must be done separately by the client for OSSD and International Certificates)</li>
+                            <li>Unlimited Documents Collection from Universities in Poland</li>
+                            <li>Transportation upon arrival in Poland</li>
+                            <li>Student Card fees x1</li>
+                            <li>Translation from English to Polish</li>
+                        </ul>
+                    </li>
+                    <li style="list-style: none;"><strong>Items excluded from the Extra Charges:</strong>
+                        <ul>
+                            <li>Flight Ticket Purchase (RGN - BKK, BKK - PL)</li>
+                            <li>Visa Application Fees @Embassy of Poland, Bangkok</li>
+                            <li>Stay @Bangkok</li>
+                            <li>Temporary Residence Card Application Fees</li>
+                        </ul>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

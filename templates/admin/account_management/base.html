@@ -1,0 +1,61 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Account Management | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="account_management">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Account Management</h3>
+
+                        <div class="container-fluid">
+                            <ul class="list-inline">
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/admin/all_users">All Users</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/admin/find_user">Edit User</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/admin/register_new_user">Register New User</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link text-warning" href="/admin/suspend_user">Suspend User</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link text-danger" href="/admin/delete_user">Delete User</a>
+                                </li>
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/admin/steps">Steps</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/admin/passport_types">Passport Types</a>
+                                </li>
+                            </ul>   
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                {% block account_management %}
+                {% endblock account_management %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}

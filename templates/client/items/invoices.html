@@ -1,0 +1,143 @@
+{% extends '/client/items/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block payments %}
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        {% if unpaid_invoices or paid_invoices %}
+        <h3 class="section-title">All Invoices Issued in {{ datetime.now().year }}</h3>
+            {% if unpaid_invoices %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="section-title">Unpaid Invoices</h5>
+                        {% for invoice in unpaid_invoices %}
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <a href="/view_invoice/{{ invoice.id }}" class="no-color-link"><h5 class="card-title section-title">{{ invoice.id }}</h5></a>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="text-align: left;">Amount (EUR) :</th>
+                                                    <td style="text-align: left;">{{ invoice.amount_eur }} EUR</td>
+                                                </tr>
+                                                {% if invoice.amount_mmk %}
+                                                <tr>
+                                                    <th style="text-align: left;">Exchange Rate :</th>
+                                                    <td style="text-align: left;">{{ "{:,.2f}".format(invoice.exchange_rate) }} MMK</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Amount (MMK) :</th>
+                                                    <td style="text-align: left;">{{ "{:,.2f}".format(invoice.amount_mmk) }} MMK</td>
+                                                </tr>
+                                                {% endif %}
+                                                <tr>
+                                                    <th style="text-align: left;">Date :</th>
+                                                    <td style="text-align: left;">{{ invoice.date.strftime('%Y-%m-%d') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Deadline :</th>
+                                                    <td style="text-align: left;">{{ invoice.deadline.strftime('%Y-%m-%d') }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Status :</th>
+                                                    <td {% if invoice.status == 'paid' %} class="bg-success text-white" {% elif invoice.status == 'unpaid' %} class="bg-danger text-white" {% endif %}>{{ invoice.status.capitalize() }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% if paid_invoices %}
+            <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                        <h5 class="section-title">Paid Invoices</h5>
+                        {% for invoice in paid_invoices %}
+                            <div class="col-md-6 col-sm-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-title section-title">
+                                            <a href="/view_invoice/{{ invoice.id }}" class="no-color-link"><h5>{{ invoice.id }}</h5></a>
+                                        </div>
+                                        <table class="table">
+                                            <tbody>
+                                                <tr>
+                                                    <th style="text-align: left;">Amount (EUR) :</th>
+                                                    <td style="text-align: left;">{{ invoice.amount_eur }} EUR</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Exchange Rate :</th>
+                                                    <td style="text-align: left;">{{ "{:,.2f}".format(invoice.exchange_rate) }} MMK</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Paid Amount :</th>
+                                                    <td style="text-align: left;">{{ "{:,.2f}".format(invoice.amount_mmk) }} MMK</td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="text-align: left;">Payment Registerer :</th>
+                                                    <td style="text-align: left;">{{ invoice.payment.payment_registerer }}</td>
+                                                </tr>
+                                                {% for payment in payments %}
+                                                    {% if payment.id == invoice.id %}
+                                                    <tr>
+                                                        <th style="text-align: left;">Payment Date :</th>
+                                                        <td style="text-align: left;">{{ payment.date.strftime('%Y-%m-%d') }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th style="text-align: left;">Registerer :</th>
+                                                        <td style="text-align: left;">{{ payment.payment_registerer }}</td>
+                                                    </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <tr>
+                                                    <th style="text-align: left;">Status :</th>
+                                                    <td {% if invoice.status == 'paid' %} class="bg-success text-white" {% elif invoice.status == 'unpaid' %} class="bg-danger text-white" {% endif %}>{{ invoice.status.capitalize() }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% else %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="card">
+                    <div class="card-title">
+                        <h3 class="section-title">No Invoices Issued in {{ datetime.now().year }}</h3>
+                    </div>
+                </div>  
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+{% endblock payments %}

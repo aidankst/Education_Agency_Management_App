@@ -1,0 +1,25 @@
+{% extends '/admin/payments/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block title %}
+Invoice #{{ invoice.id }} | {{ invoice.client.user.username }}
+{% endblock title %}
+
+{% block payments %}
+
+<body>
+    <div class="print-content">
+        {% include '/master/invoice.html' %}
+    </div>
+    <div class="container-fluid">
+        <div class="float-end mb-5">
+            <a href="javascript:window.print()" class="btn btn-success me-1 print-none"><i class="fa fa-print"></i></a>
+        </div>
+    </div> 
+</body>
+
+{% endblock payments %}

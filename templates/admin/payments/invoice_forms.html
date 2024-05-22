@@ -1,0 +1,82 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="card">
+            <div class="card-title">
+                <h3 class="section-title">Create New Invoice</h3>
+            </div>
+            <div class="card-body">
+                <form action="/admin/invoice_second_step" method="get" id="invoice_first_step_form" validate>
+                    <div class="section invoice-container">
+                        <div class="form-control mt-1 mb-3">
+                            {% if clients %}
+                                <label class="form-label mt-2 mb-2" for="clientSelect">Client</label>
+                                <select class="form-select" id="clientSelect" name="user_id">
+                                    {% for client in clients %}
+                                        <option value="{{ client.id }}">{{ client.user.username.title() }}</option>
+                                    {% endfor %}
+                                </select>
+                            {% else %}
+                            <label class="form-label mt-2 mb-2">--- There is no client ---</label>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="section invoice-container">
+                        <div class="row">
+                            <div class="col-md-6 col-sm-12">
+                                <div class="mb-3">
+                                    <label for="dateInput" class="form-label">Invoice Date</label>
+                                    <input type="date" class="form-control" id="dateInput" name="date" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6 col-sm-12">
+                                <label class="form-label" for="termsSelect">Terms</label>
+                                <select class="form-select" id="termsSelect" name="terms">
+                                    <option value="7" selected>Due within 7 days</option>
+                                    <option value="14">Due within 14 days</option>
+                                </select>
+                            </div>
+                            <!-- <div class="col-md-4 col-sm-12">
+                                {% if packages %}
+                                    <label class="form-label" for="packageSelect">Package</label>
+                                    <select class="form-select" id="packageSelect" name="package_id">
+                                        {% for package in packages %}
+                                            <option value="{{ package.id }}">{{ package.name.title() }}</option>
+                                        {% endfor %}
+                                    </select>
+                                {% else %}
+                                <label class="form-label mt-2 mb-2">--- There is no packages ---</label>
+                                {% endif %}
+                            </div> -->
+                        </div>
+                    </div>
+                    
+                    {% if clients %}
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="w-25 btn btn-sm btn-primary mt-1" id="invoice_first_step_button">Next</button>
+                        </div>
+                    {% endif %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var today = new Date();
+        var dd = String(today.getDate()).padStart(2, '0');
+        var mm = String(today.getMonth() + 1).padStart(2, '0'); // January is 0!
+        var yyyy = today.getFullYear();
+
+        today = yyyy + '-' + mm + '-' + dd; // Format required by HTML date inputs
+        document.getElementById('dateInput').value = today; // Set the default date to today
+    });
+
+    document.getElementById('invoice_first_step_form').onsubmit = function() {
+        var submitButton = document.getElementById('invoice_first_step_button');
+        if (submitButton) {
+            submitButton.disabled = true;
+            submitButton.textContent = 'Loading ...';
+        }
+    };
+</script>

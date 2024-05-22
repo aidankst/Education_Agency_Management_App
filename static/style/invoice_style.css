@@ -1,0 +1,82 @@
+.bill-to-section {
+    background-color: #f9bdac;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+}
+.total-container {
+    background-color: #f9bdac;
+    padding: 0;
+    margin: 0;
+    border-radius: 15px;
+}
+
+.invoice .card{
+    padding: 40px 0px;
+}
+
+.bill-to-title {
+    padding: 10px 0px;
+    margin: 0 10px;
+}
+
+tr {
+    color: #eb5324;
+}
+
+.margin-top-20 {
+    margin-top: 20px;
+}
+.margin-top-30 {
+    margin-top: 30px;
+}
+
+@media print {
+    @page{
+        size: A3 portrait;
+        margin: 30pt 0;
+    }
+
+    /* Hide everything initially */
+    body * {
+        visibility: hidden;
+    }
+
+    /* Ensure the invoice container and all its children are visible */
+    .print-content, .print-content * {
+        visibility: visible;
+    }
+
+    .print-content .card {
+        visibility: hidden;
+    }
+    .margin-top-20 {
+        margin-top: 0px;
+    }
+
+    #invoice_logo {
+        width: auto;
+        height: 150px !important;
+    }
+
+    h3, h4, h5{
+        font-size: large !important;
+    }
+    .invoice .card{
+        padding: 0px;
+    }
+    table{
+        font-size: medium !important;
+    }
+    /* p, .h7{
+        font-size: small !important;
+    } */
+    /* Position the invoice at the top of the page and occupy the full width */
+    .print-content {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+    }
+} 

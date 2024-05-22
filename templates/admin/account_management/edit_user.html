@@ -1,0 +1,89 @@
+{% extends '/admin/account_management/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block account_management %}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    {% if user.role == 'client' %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Add Remark</h3>
+                        <form action="/admin/add_remark/{{ user.id }}" method="post" id="add_remark_form" validate>
+                            <div class="mb-3">
+                                <div class="form-floating mt-1 mb-3">
+                                    <input type="text" class="form-control" id="remarkInput" placeholder="<REMARK>" name="remark" {% if user.remark %} value="{{ user.remark }}" {% endif %}>
+                                    <label for="remarkInput">Remark</span></label>
+                                </div>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-25 btn btn-sm btn-primary mt-1" id="add_remark_button">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Register a Step</h3>
+                        <form action="/admin/add_step_to_client/{{ client.id }}" method="post" id="add_step_to_client_form" validate>
+                            <div class="mb-3">
+                                <label class="form-label" for="stepsSelect">Choose a Step</label>
+                                <select class="form-select" id="stepsSelect" name="step_id">
+                                    {% for step in steps %}
+                                        {% if client.steps %}
+                                            {% if step.id == client.steps_id %}
+                                                <option value="{{ step.id }}" selected>{{ step.name }}</option>
+                                            {% else %}
+                                                <option value="{{ step.id }}">{{ step.name }}</option>
+                                            {% endif %}
+                                        {% else %}
+                                            <option value="{{ step.id }}">{{ step.name }}</option>
+                                        {% endif %}
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <button type="submit" class="w-50 btn btn-sm btn-primary mt-1" id="add_step_to_client_button">Add</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <script>
+        document.getElementById('add_step_to_client_form').onsubmit = function() {
+            var submitButton = document.getElementById('add_step_to_client_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Adding ...';
+            }
+        };
+        document.getElementById('add_remark_form').onsubmit = function() {
+            var submitButton = document.getElementById('add_remark_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Adding ...';
+            }
+        };
+    </script>
+    {% include '/master/personal_form.html' %}
+{% endblock account_management %}

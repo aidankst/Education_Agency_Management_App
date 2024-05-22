@@ -1,0 +1,40 @@
+{% extends '/admin/account_management/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block account_management %}
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+{% if messages %}
+    {% for category, message in messages %}
+        <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+            {{ message }}
+        </div>
+    {% endfor %}
+{% endif %}
+{% endwith %}
+
+<body>
+    {% include '/admin/account_management/steps_forms.html' %}
+
+    <div class="container-fluid">
+        <h3 class="section-title">Steps</h3>
+        <div class="row">
+            {% for step in steps %}
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="section-title">Step {{ step.id }}</h4>
+                        <p class="section-title">Description : {{ step.name }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+
+{% endblock account_management %}

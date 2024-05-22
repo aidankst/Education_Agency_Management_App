@@ -1,0 +1,103 @@
+<head>
+    <link rel="stylesheet" href="/static/style/nav_footer_style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" id="brand" href="/"><img id="logo_img" src="{{ url_for('static', filename='images/logo.png') }}" alt="logo-leveling">
+          {% if not logged_in %}
+            Leveling Education Service
+          {% elif logged_in %}
+            {% if current_user.role == 'admin' %}
+              Admin Panel
+            {% elif current_user.role == 'client' %}
+              Client Panel
+            {% endif %}
+          {% endif %}
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+  
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="navbar-item">
+                  <a class="nav-link" href="/">Home</a>
+                </li>
+            </ul>
+            
+            {% if logged_in %}
+              {% if current_user.role == 'admin' %}
+                <ul class="navbar-nav">
+                  <li class="navbar-item">
+                    <a class="nav-link" href="/admin/dashboard">Dashboard</a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav">
+                  <li class="navbar-item">
+                    <ul class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-secondary" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Admin Menu
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <div class="container-fluid">
+                          <li><a class="dropdown-item" href="/admin/account_management">Account Management</a></li>
+                          <li><a class="dropdown-item" href="/admin/payments">Payments</a></li>
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/settings">Account Settings</a></li>
+                        </div>
+                      </ul> 
+                    </ul>
+                  </li>
+                </ul>
+              {% elif current_user.role == 'client' %}
+                <ul class="navbar-nav">
+                  <li class="navbar-item">
+                    <a class="nav-link" href="/client/dashboard">Dashboard</a>
+                  </li>
+                </ul>
+                <ul class="navbar-nav">
+                  <li class="navbar-item">
+                    <ul class="nav-item dropdown">
+                      <a class="nav-link dropdown-toggle text-secondary" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Client Menu
+                      </a>
+                      <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
+                        <div class="container-fluid">
+                          <li><a class="dropdown-item" href="/client/items">Items</a></li>
+                          {% if current_user.google_drive %}
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="{{current_user.google_drive}}" target="_blank">Google Drive</a></li>
+                          {% endif %}
+                          <li><hr class="dropdown-divider"></li>
+                          <li><a class="dropdown-item" href="/settings">Account Settings</a></li>
+                        </div>
+                      </ul> 
+                    </ul>
+                  </li>
+                </ul>
+              {% endif %}
+            <ul class="navbar-nav">
+                <li class="navbar-item">
+                <a class="nav-link" href="/logout">Logout</a>
+                </li>
+            </ul>
+            <h6 class="no-color-text">Logged in as : {{ current_user.username }}</h6>
+            {% else %}
+              <ul class="navbar-nav">
+                <li class="navbar-item">
+                  <a class="nav-link" href="/contact">Contact</a>
+                </li>
+              </ul>
+              <ul class="navbar-nav">
+                <li class="navbar-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+              </ul>
+            {% endif %}
+        </div>
+      </div>
+    </nav>
+</body>
+  

@@ -1,0 +1,244 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
+body {
+    height: 100vh;
+    width: 100%;
+}
+
+.card {
+    box-shadow: 0 2px 6px 0 rgb(218 218 253 / 65%), 0 2px 6px 0 rgb(206 206 238 / 54%);
+}
+
+
+
+
+
+
+#cover_image {
+    position: relative;
+    width: 100%;
+    max-height: 640px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#index #headline{
+    position: absolute;
+    top: 40%;
+    left: 35%;
+    border-radius: 20px;
+    font-size: 5em;
+    font-weight: 900;
+    color: black;
+}
+
+#index .flex-container {
+    width: 400px;
+    height: 200px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#achievements .container-fluid {
+    text-align: center;
+    padding: 50px;
+}
+
+#achievements .row{
+    padding: 20px;
+}
+#achievements .col-md-3.col-sm-12{
+    padding: 0 20px 0 20px;
+}
+
+
+
+
+
+
+
+#contact .row, #contact .container-fluid.no-color-text {
+    padding: 30px 5px 20px 5px;
+}
+
+#contact form .row{
+    padding: 5px
+}
+
+
+
+
+
+
+
+
+
+#login_register #container {
+    margin-top: 80px;
+    margin-bottom: 80px;
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+}
+
+#login_register div.container .container-fluid {
+    margin-top: 30px;
+}
+
+#login_register div h1 {
+    font-size: 50px;
+    font-weight: 500;
+    text-align: center;
+}
+
+#login_register div a.text{
+    margin: 10px;
+}
+
+
+
+
+
+
+
+
+.section-title {
+    text-align: center;
+    margin: 20px 0px;
+}
+
+.section-container {
+    margin: 20px;
+    padding: 5px;
+    text-align: center;
+    border-radius: 20px;
+    background-color: #eb5324;
+    opacity: 70%;
+}
+
+.brand-color {
+    color: #eb5324;
+}
+
+.no-color-link {
+    color: inherit;   /* Inherit color from parent element */
+    text-decoration: none;  /* Remove the underline */
+}
+
+.no-color-text {
+    color: gray;   /* Inherit color from parent element */
+    text-decoration: none;  /* Remove the underline */
+}
+
+
+
+
+
+
+
+
+
+#invoice_logo {
+    width: auto;
+    height: 150px;
+}
+
+.invoice-card {
+    padding: 40px 0px;
+}
+
+
+
+
+
+
+
+
+#contract_logo {
+    width: auto;
+    height: 200px;
+}
+
+#contract p {
+    margin: 30px 0;
+}
+
+#contract ol {
+    list-style-type: none; /* Removes default numbering */
+    padding-left: 20px; /* Adjusts indentation */
+    counter-reset: section; /* Resets the counter at each new <ol> */
+}
+#contract li {
+    margin: 10px; /* Adds space between list items */
+    counter-increment: section; /* Increments the counter */
+}
+/* Target only direct li children of ol */
+#contract ol > li::before {
+    content: counters(section, ".") " "; /* Combines counters with dots */
+    font-weight: bold; /* Makes the numbers bold */
+}
+
+.contract-body {
+    text-align: justify;
+    text-justify: inter-word;
+    padding: 0 30px;
+}
+
+.contract-text {
+    font-family: "Courier Prime", monospace;
+    /* font-size: 16px; */
+    /* font-weight: 400; */
+    font-style: normal;
+}
+
+.contract-header, .contract-footer {
+    display: none;
+}
+
+@media (max-width: 768px) {
+    #index #headline{
+        display: none;
+    }
+    #index .flex-container {
+        width: 120px;
+        height: 30px;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #invoice_logo {
+        width: auto;
+        height: 100px;
+    }
+    #contract_logo {
+        width: auto;
+        height: 100px;
+    }
+
+    .print-content h3, h4, h5 {
+        font-size: small;
+    }
+    .print-content .card {
+        padding: 0;
+    }
+    .print-content table {
+        font-size: x-small;
+    }
+
+    p{
+        font-size: 14px;
+    }
+
+    #login_register #container {
+        margin-top: 80px;
+        margin-bottom: 80px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+}
+

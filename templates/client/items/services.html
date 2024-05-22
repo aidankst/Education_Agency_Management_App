@@ -1,0 +1,49 @@
+{% extends '/client/items/base.html' %}
+
+{% block style %}   
+    <link rel="stylesheet" href="/static/style/admin_style.css">
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block title %}
+Services | Leveling Education Service
+{% endblock title %}
+
+{% block payments %}
+
+<body>
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="section-title">Current Package</h5>
+                {% if user.client.packages %}
+                    {% for package in user.client.packages %}
+                        <p class="text-center">{{ package.name }}</p>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Service</th>
+                                    <th scope="col">Description</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for service in package.services %}
+                                    <tr>
+                                        <td scope="row">{{ loop.index }}</td>
+                                        <td>{{ service.name }}</td>
+                                        <td>{{ service.description }}</td>
+                                     </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endfor %}
+                {% else %}
+                    <p class="text-danger text-center">You don't have any packages yet.</p>                    
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock payments %}

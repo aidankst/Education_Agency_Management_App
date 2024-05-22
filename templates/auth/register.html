@@ -1,0 +1,72 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Register | Leveling Education Service
+{% endblock title %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="login_register">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container" id="container">
+        <h1>Register</h1>
+        <div class="container-fluid">
+            <form action="/register" method="post" id="register_form" validate>
+                <div class="form-floating mt-1 mb-3">
+                    <input type="text" pattern="^\d{6}$" minlength="6" maxlength="6" class="form-control" id="idInput" placeholder="<USER_ID>" name="id" required>
+                    <label for="idInput">ID <span class="no-color-text">(Last 6 digits of your NRC)</span></label>
+                </div>
+                <div class="form-floating mt-1 mb-3">
+                    <input type="text" class="form-control" id="nameInput" placeholder="<Name>" name="name" required>
+                    <label for="nameInput">Name</label>
+                </div>
+                <div class="form-floating mt-1 mb-3">
+                    <input type="email" class="form-control" id="emailInput" placeholder="<EMAIL>" name="email" required>
+                    <label for="emailInput">Email address</label>
+                </div>
+                <div class="form-floating mt-4 mb-3">
+                    <input type="password" class="form-control" id="passwordInput" placeholder="<Password>" name="password" required>
+                    <label for="passwordInput">Password</label>
+                </div>
+                <div class="form-control mt-4 mb-3">
+                    <label class="form-label mt-2 mb-2" for="roleSelect">Role</label>
+                    <select class="form-select" id="roleSelect" name="role" required>
+                        <option value="client" selected>Client</option>
+                    </select>
+                </div>
+                <div class="d-flex justify-content-center align-items-center">
+                    <button type="submit" class="w-50 btn btn-lg btn-primary mt-1" id="register_button">Register</button>
+                </div>
+            </form>
+            <div class="d-flex justify-content-center align-items-center">
+                <a class="no-color-link text" href="/login">Already have an account? Login Here!</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('register_form').onsubmit = function() {
+            var submitButton = document.getElementById('register_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Registering ...';
+            }
+        };
+    </script>
+</body>
+
+
+{% endblock %}

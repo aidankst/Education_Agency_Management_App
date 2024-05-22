@@ -1,0 +1,85 @@
+{% extends '/admin/payments/base.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block payments %}
+
+<body>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    
+    {% include '/admin/payments/items_forms.html' %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-title">
+                <h3 class="section-title">Items</h3>
+            </div>
+            <div class="card-body">
+                <div class="container-fluid">
+                    <table class="table">
+                        <tr>
+                            <thead>
+                                <th scope="col">Package</th>
+                                <th scope="col">Item Name</th>
+                                <th scope="col">Description</th>
+                                <th scope="col">Amount</th>
+                                <th scope="col">Extra Charges</th>
+                                <th scope="col">Action</th>
+                            </thead>
+                        </tr>
+                        <tr>
+                            <tbody>
+                                {% if items %}
+                                    {% for item in items %}
+                                        <tr>
+                                            <td>{{ item.package.name }}</td>
+                                            <td>{{ item.name }}</td>
+                                            <td>{{ item.description }}</td>
+                                            <td>&euro; {{ item.amount_eur }}</td>
+                                            <td>{{ item.extra_charges }}</td>
+                                            <td>
+                                                <a class="text-danger" href="/admin/delete_item/{{ item.id }}" id="deleteService">Delete</a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center;">No items registered</td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.getElementById('add_new_service_form').onsubmit = function() {
+            var submitButton = document.getElementById('add_new_service_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Adding ...';
+            }
+        };
+        document.getElementById('deleteService').onclick = function() {
+            var deleteService = document.getElementById('deleteService');
+            if (deleteService) {
+                deleteService.textContent = 'Deleting ...';
+            }
+        };
+    </script>
+</body>
+
+{% endblock payments %}

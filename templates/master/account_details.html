@@ -1,0 +1,61 @@
+{% extends '/master/settings.html' %}
+
+{% block style %}
+    <link rel="stylesheet" href="/static/style/admin_style.css">    
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block settings %}
+
+<body>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }}" style="text-align: center; font-size: large;">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <div class="container-fluid">
+        <div class="card">
+            <div class="card-body">
+                <h3 class="section-title">Account Details</h3>
+                <hr>
+                <div class="container">
+                    <form action="/account_details" method="post" id="change_username_form" validate>
+                        <div class="mb-3">
+                            <label for="nameInput" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="nameInput" name="name" value="{{ current_user.username }}" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" value="{{ current_user.email }}" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="role" class="form-label">Role</label>
+                            <input type="text" class="form-control" id="role" value="{{ current_user.role.capitalize() }}" readonly>
+                        </div>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <button type="submit" class="w-25 btn btn-sm btn-primary mt-1" id="change_username_button">Change</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('change_username_form').onsubmit = function() {
+            var submitButton = document.getElementById('change_username_button');
+            if (submitButton) {
+                submitButton.disabled = true;
+                submitButton.textContent = 'Changing ...';
+            }
+        };
+    </script>
+</body>
+
+{% endblock settings %}

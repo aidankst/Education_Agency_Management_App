@@ -1,0 +1,47 @@
+{% extends '/master/base.html' %}
+
+{% block title %}
+Payments | Leveling Education Service
+{% endblock title %}
+
+{% block style %} 
+    <link rel="stylesheet" href="/static/style/style.css">
+{% endblock style %}
+
+{% block content %}
+
+<body id="payments">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 col-sm-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="section-title">Items</h3>
+
+                        <div class="container-fluid">
+                            <ul class="list-inline">
+                                <hr>
+                                <li>
+                                    <a class="no-color-link" href="/client/invoices">Invoices</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/view_contract/{{ current_user.id }}">Contract</a>
+                                </li>
+                                <li>
+                                    <a class="no-color-link" href="/client/services">Services</a>
+                                </li>
+                            </ul>   
+                        </div>
+                        
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9 col-sm-12">
+                {% block payments %}
+                {% endblock payments %}
+            </div>
+        </div>
+    </div>
+</body>
+
+{% endblock content %}
