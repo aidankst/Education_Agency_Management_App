@@ -6,9 +6,9 @@
 
 | No. | Table of Contents                                                                   |
 | --- | ----------------------------------------------------------------------- |
-| 1   | [**Project Description**](https://github.com/aidankst/Education_Agency_Management_App/edit/main/README.md)  |
-| 2   | [**User Stories**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/Education%20Agency%20Management%20App.xlsx) |
-| 3   | [**Acceptance Criteria**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/Education%20Agency%20Management%20App.xlsx)   |   
+| 1   | [**Project Description and Documentation**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/Education%20Agency%20Management%20App.xlsx)  |
+| 2   | [**User Stories**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/User%20Stories/User%20Story.png) |
+| 3   | [**Acceptance Criteria**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/Acceptance%20Criteria)   |   
 | 4   | [**Project Base**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates/master)   |
 | 5   | [**Views**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/views)   |     
 | 6   | [**Templates**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates)   |
