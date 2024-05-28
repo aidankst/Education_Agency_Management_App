@@ -7,12 +7,11 @@
 | No. | Table of Contents                                                                   |
 | --- | ----------------------------------------------------------------------- |
 | 1   | [**Project Description and Documentation**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/Education%20Agency%20Management%20App.xlsx)  |
-| 2   | [**User Stories**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/User%20Stories/User%20Story.png) |
-| 3   | [**Acceptance Criteria**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/Acceptance%20Criteria)   |   
-| 4   | [**Project Base**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates/master)   |
-| 5   | [**Views**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/views)   |     
-| 6   | [**Templates**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates)   |
-| 7   | [**Licence**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/LICENSE)   |
+| 2   | [**User Stories and Acceptance Criteria**](https://docs.google.com/spreadsheets/d/1bam7kp9jI_R_XUEUHkzsrBdgv3-f0bxNS-NaIJmKZVI/edit?usp=sharing)   |   
+| 3   | [**Project Base**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates/master)   |
+| 4   | [**Views**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/views)   |     
+| 5   | [**Templates**](https://github.com/aidankst/Education_Agency_Management_App/tree/main/templates)   |
+| 6   | [**Licence**](https://github.com/aidankst/Education_Agency_Management_App/blob/main/LICENSE)   |
 
 ## Overview
 This app is a comprehensive Python-based education agency management app built with the Flask framework. It centralizes all the agency's workflow needs in one user-friendly platform, empowering to manage clients, generate invoices, send automated emails, track important information, and improve overall operational efficiency.
